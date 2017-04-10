@@ -1,11 +1,16 @@
+//load mbed libraries, rots is needed for multithreading, queue for queue object
+
 #include "mbed.h"
 #include "rtos.h"
 #include "string.h"
 #include "queue.h"
 #include "BufferedSerial.h"
 
+//MAXNEMEAMSG is the max lenght of a valid NMEA message
 #define MAXNMEAMSG 83
+
 //tx e rx dopo
+
 BufferedSerial serDue(PA_2, PA_3);
 BufferedSerial serUno(PA_15, PB_7);
 BufferedSerial serSei(PA_11, PA_12);
