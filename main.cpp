@@ -9,7 +9,7 @@
 //MAXNEMEAMSG is the max lenght of a valid NMEA message
 #define MAXNMEAMSG 83
 
-//tx e rx dopo
+//tx pin first then rx 
 
 BufferedSerial serDue(PA_2, PA_3);
 BufferedSerial serUno(PA_15, PB_7);
@@ -44,30 +44,32 @@ void NMEARx(void const *args)
     while (1) {
                 indice =0;
                 while (!ps->readable()) Thread::wait(10);
-                messaggio[indice] = ps->getc(); //costruisco il messaggio
+                messaggio[indice] = ps->getc(); //build the message
                 if (messaggio[0] == '$' || messaggio[0] == '!') {
                     indice =1;
                     while (1) {
-                        if (indice >= MAXNMEAMSG)  { //messaggio troppo lungo
+                        if (indice >= MAXNMEAMSG)  { //check is NMEA msg is too long wrt its specs
                             indice = 0;
                             break;
                         }
                         while (!ps->readable()) Thread::wait(10);
-                        messaggio[indice++] = ps->getc(); // Carico prossimo carattere
-                        if (messaggio[indice-1] == 0x0a)  { //a capo
-                            messaggio[indice] = '\0'; //termino la stringa
+                        messaggio[indice++] = ps->getc(); // load next char into msg
+                        if (messaggio[indice-1] == 0x0a)  { //newline
+                            messaggio[indice] = '\0'; // null, string terminator
                             break;
                         }
                     } // while interno 1
                 if (indice) {
-                // printf("Messaggio %s", messaggio);
-                //serSei.puts(messaggio);
-                    //sprintf(messaggio,"%s %04d",messaggio,contatore++);
+                    // test things
+                        // printf("Messaggio %s", messaggio);
+                        //serSei.puts(messaggio);
+                        //sprintf(messaggio,"%s %04d",messaggio,contatore++);
                     myQueue.Put(messaggio);
                     indice=0;
-                    //sprintf(messaggio, "Ciao");
+                        //sprintf(messaggio, "Ciao");
                 }
-            //valutare se mettere Thread::wait(10);
+                    // a 10 milliseconds pause can be added if needed
+                    //Thread::wait(10);
         }
 
     }
