@@ -13,8 +13,12 @@ A basic idea of the [NMEA 0183](https://en.wikipedia.org/wiki/NMEA_0183) (a litt
 ### Hardware
 The original hardware for NEMO was an Arduino UNO board but we had to use an STM32 NUCLEO F4111RE board due to the rtos support. Because the board works on TTL logic levels (0-5V) and the RS 232 protocol works on signal with +/- 12V a signal converter is needed. I used a MAX232 integrated circuit which can converte (bidirectionally) the signal. A Wifi Module is then used to transimt the collected data.
 
-# schema circuito
+
 
 
 ### Software
 The code on the board is divided in 3 threads operating in the producer/consumer architecture. We have the 2 (or N) producer threads that read the input data from the serial ports and queue it. Finally the consumer thread reads and "consume" the queue sending the signal over a third serial port connected to a wifi module.
+
+![NEMO circuit diagram](/img/schema_circuito_prog_bb.svg)
+![Screenshot of NEMO](/img/IMG_0059.PNG)
+![Screenshot of NEMO](/img/IMG_0060.PNG)
